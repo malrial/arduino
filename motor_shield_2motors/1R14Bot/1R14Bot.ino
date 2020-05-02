@@ -12,6 +12,11 @@ Analog 11: control channel B motor speed (0-255)
 
 *************************************************************/
 
+const int DEFAULT_SPEED = 255;
+
+const int TURN_SPEED = 180;
+const int TURN_TIME = 1000;
+
 void setup() {
   
   //Setup Channel A
@@ -27,11 +32,19 @@ void setup() {
 void loop(){
 
   //Go forward
-  goForward(255,1000);
+  goForward(DEFAULT_SPEED,1000);
 
   brake();
 
-  goBackward(255,1000);
+  turnLeft();
+
+  brake();
+
+  turnRight();
+
+  brake();
+
+  goBackward(DEFAULT_SPEED,1000);
   
   brake();
 
@@ -72,6 +85,50 @@ void goBackward(int speed,int msTime){
   analogWrite(11, speed); 
 
   delay(msTime);     
+}
+
+void turnLeft(){
+
+  delay(TURN_TIME);
+  
+  //Motor A backward @  speed
+  digitalWrite(12, LOW); 
+  //brake off
+  digitalWrite(9, LOW);   
+  // speed
+  analogWrite(3, TURN_SPEED);   
+
+  //Motor B backward @  speed
+  digitalWrite(13, HIGH);
+  //brake off  
+  digitalWrite(8, LOW); 
+  // spedd  
+  analogWrite(11, TURN_SPEED); 
+
+  delay(TURN_TIME);
+
+}
+
+void turnRight(){
+
+  delay(TURN_TIME);
+    
+  //Motor A backward @  speed
+  digitalWrite(12, HIGH); 
+  //brake off
+  digitalWrite(9, LOW);   
+  // speed
+  analogWrite(3, TURN_SPEED);   
+
+  //Motor B backward @  speed
+  digitalWrite(13, LOW);
+  //brake off  
+  digitalWrite(8, LOW); 
+  // spedd  
+  analogWrite(11, TURN_SPEED); 
+
+  delay(TURN_TIME);
+
 }
 
 
